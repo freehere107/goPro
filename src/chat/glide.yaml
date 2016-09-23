@@ -1,0 +1,13 @@
+package: chat
+import:
+- package: github.com/labstack/echo
+  subpackages:
+  - engine/standard
+  - middleware
+- package: golang.org/x/net
+  subpackages:
+  - context
+- package: github.com/gorilla/websocket
+- package: github.com/valyala/fasthttp
+- package: gopkg.in/redis.v4
+- package: github.com/spf13/viper

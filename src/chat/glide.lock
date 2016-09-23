@@ -1,0 +1,41 @@
+hash: 9b2f161fe093800131797328377354e12596938d1c42f991ec1d652cac34e885
+updated: 2016-09-23T17:00:54.297679927+08:00
+imports:
+- name: github.com/dgrijalva/jwt-go
+  version: bd6841889df20b6101bb3188451db612c5629c93
+- name: github.com/gorilla/websocket
+  version: bd6841889df20b6101bb3188451db612c5629c93
+- name: github.com/labstack/echo
+  version: bd6841889df20b6101bb3188451db612c5629c93
+  subpackages:
+  - engine/standard
+  - middleware
+  - engine
+  - log
+- name: github.com/labstack/gommon
+  version: bd6841889df20b6101bb3188451db612c5629c93
+  subpackages:
+  - log
+  - bytes
+  - color
+- name: github.com/mattn/go-colorable
+  version: bd6841889df20b6101bb3188451db612c5629c93
+- name: github.com/mattn/go-isatty
+  version: bd6841889df20b6101bb3188451db612c5629c93
+- name: github.com/spf13/viper
+  version: ed0a9674c6ef3646e218d8bb70708d250e94354b
+- name: github.com/valyala/fasthttp
+  version: bd6841889df20b6101bb3188451db612c5629c93
+- name: github.com/valyala/fasttemplate
+  version: bd6841889df20b6101bb3188451db612c5629c93
+- name: golang.org/x/net
+  version: bd6841889df20b6101bb3188451db612c5629c93
+  subpackages:
+  - context
+- name: golang.org/x/sys
+  version: bd6841889df20b6101bb3188451db612c5629c93
+  subpackages:
+  - unix
+- name: gopkg.in/redis.v4
+  version: bd6841889df20b6101bb3188451db612c5629c93
+devImports: []
