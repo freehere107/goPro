@@ -1,6 +1,7 @@
 package main
 
 import (
+	"chat/models"
 	"chat/utiles"
 	"fmt"
 	"github.com/gorilla/websocket"
@@ -28,7 +29,8 @@ func ReceiveMessage(c *websocket.Conn) {
 func SocketReceive() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		user_id := r.FormValue("user_id")
-		fmt.Println(user_id)
+		user, _ := models.GetUserById(user_id)
+		fmt.Println(user)
 		c, err := upgrader.Upgrade(w, r, nil)
 		if err != nil {
 			log.Print("upgrade:", err)

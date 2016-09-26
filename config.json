@@ -1,5 +1,11 @@
 {
   "redis": {
     "host": "127.0.0.1:6379"
+  },
+  "mysql": {
+    "host": "127.0.0.1:3306",
+    "user": "root",
+    "pass": "",
+    "dbName": "chat"
   }
 }
