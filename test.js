@@ -6,10 +6,7 @@ ws.on('open', function (event) {
     setInterval(function () {
         ws.send(JSON.stringify({
             user_id: '1',
-            action: 'say',
-            args: {
-                content: '123123123'
-            }
+            content: '123123123'
         }));
     }, 1000);
 });

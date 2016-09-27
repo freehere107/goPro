@@ -2,36 +2,47 @@ package main
 
 import (
 	"chat/models"
+	"chat/routes"
 	"chat/utiles"
+	"encoding/json"
 	"fmt"
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
+	"github.com/pkg/errors"
 	"log"
 	"net/http"
 )
 
 var (
-	upgrader = websocket.Upgrader{}
+	upGrader = websocket.Upgrader{}
 )
 
 func ReceiveMessage(c *websocket.Conn) {
+	redisCoon := utiles.RedisClient
 	for {
 		_, msg, err := c.ReadMessage()
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("%s\n", msg)
+		var m models.Message
+		if err := json.Unmarshal([]byte(msg), &m); err != nil {
+			errMsg := fmt.Sprintf("Dispatch error:%s", err)
+			errors.New(errMsg)
+		}
+		if err == nil {
+			redisCoon.Publish("chat", m.Content).Result()
+		}
 	}
 }
 
-func SocketReceive() http.HandlerFunc {
+func SocketReceive(messageRoute *routes.MRouter) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		user_id := r.FormValue("user_id")
-		user, _ := models.GetUserById(user_id)
-		fmt.Println(user)
-		c, err := upgrader.Upgrade(w, r, nil)
+		userID := r.FormValue("user_id")
+		chatChannel := make(chan models.Message)
+		messageRoute.ChatConn[userID] = routes.ChatConn{Conn: chatChannel}
+		c, err := upGrader.Upgrade(w, r, nil)
 		if err != nil {
 			log.Print("upgrade:", err)
 			return
@@ -43,10 +54,9 @@ func SocketReceive() http.HandlerFunc {
 
 func main() {
 	e := echo.New()
-	result, _ := utiles.RedisClient.Get("key").Result()
-	println(result)
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	e.GET("/ws", standard.WrapHandler(http.HandlerFunc(SocketReceive())))
+	messageRoute := routes.NewMessageRouter()
+	e.GET("/ws", standard.WrapHandler(http.HandlerFunc(SocketReceive(messageRoute))))
 	e.Run(standard.New(":1323"))
 }
